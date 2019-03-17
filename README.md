@@ -4,4 +4,6 @@ A web application for keeping track of deadlines.
 
 ## TODO
 
-Everything
+- A database (sqlite)
+- Adding deadlines to the database
+- Viewing deadlines from the database
