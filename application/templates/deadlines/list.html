@@ -10,6 +10,11 @@
 		<tr>
 			<td>{{ deadline.name }}</td>
 			<td>{{ deadline.done }}</td>
+			<td>
+				<form method="POST" action="{{ url_for('set_deadline_done', deadline_id=deadline.id) }}">
+					<input type="submit" value="Set as completed"/>
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
