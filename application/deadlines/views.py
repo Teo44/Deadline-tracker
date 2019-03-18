@@ -1,6 +1,10 @@
 from application import app, db
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline
+
+@app.route("/deadlines", methods=["GET"])
+def deadlines_index():
+    return render_template("deadlines/list.html", deadlines = Deadline.query.all())
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
@@ -14,4 +18,4 @@ def deadlines_create():
     db.session().add(d)
     db.session().commit()
 
-    return "hello world 321"
+    return redirect(url_for("deadlines_index"))

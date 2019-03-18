@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<table>
+		<tr>
+			<th>Deadline</th>
+			<th>Completed</th>
+		</tr>
+		{% for deadline in deadlines %}
+		<tr>
+			<td>{{ deadline.name }}</td>
+			<td>{{ deadline.done }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
