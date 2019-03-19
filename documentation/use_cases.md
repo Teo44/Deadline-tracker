@@ -1,4 +1,4 @@
-# Usage of deadline-tracker
+# Use caeses of deadline-tracker
 
 The goal of deadline-tracker is to make keeping track of deadlines simple for users, while offering useful functionality for both the regular and power users. On the most basic level, users will be able to add deadlines, tasks that must be completed before a certain date and time, and mark them as done.  
 
