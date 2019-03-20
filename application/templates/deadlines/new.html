@@ -2,7 +2,10 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('deadlines_create') }}">
-	<input type="text" name="name"/>
+	Name:<br>
+	<input type="text" name="name"/><br>
+	Date:<br>
+	<input type="date" name="date_to_complete"><br>
 	<input type="submit" value="Add a new deadline"/>
 </form>
 {% endblock %}

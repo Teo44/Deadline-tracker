@@ -14,7 +14,7 @@ def deadlines_form():
 
 @app.route("/deadlines/", methods=["POST"])
 def deadlines_create():
-    d = Deadline(request.form.get("name"))
+    d = Deadline(request.form.get("name"), request.form.get("date_to_complete"))
 
     db.session().add(d)
     db.session().commit()

@@ -1,4 +1,5 @@
 from application import db
+from datetime import datetime
 
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -7,6 +8,11 @@ class Deadline(db.Model):
     priority = db.Column(db.Integer)
     done = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, name):
+    def __init__(self, name, date_to_complete):
         self.name = name
         self.done = False
+        
+        # parse the htlm date-string into a list
+        date = date_to_complete.split("-")
+        # sets the day, month and year from the date-list
+        self.date_to_complete = datetime(int(date[0]), int(date[1]), int(date[2]))
