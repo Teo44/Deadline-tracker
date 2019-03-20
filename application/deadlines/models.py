@@ -3,7 +3,8 @@ from datetime import datetime
 
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_to_complete = db.Column(db.DateTime)
+    date_to_complete = db.Column(db.Date)
+    time_to_complete = db.Column(db.Time)
     name = db.Column(db.String(128), nullable=False)
     priority = db.Column(db.Integer)
     done = db.Column(db.Boolean, nullable=False, default=False)

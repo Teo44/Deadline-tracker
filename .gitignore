@@ -127,3 +127,4 @@ dmypy.json
 
 deadlines.db
 todo.txt
+deadlines.db.backup
