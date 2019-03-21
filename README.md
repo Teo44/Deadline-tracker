@@ -1,6 +1,6 @@
 # Deadline-tracker
 
-A web application for keeping track of deadlines. Currently users can add deadlines and mark them as completed.
+A web application for keeping track of deadlines. Currently users can add deadlines with a name and a date, and mark them as completed.
 
 The application in it's current state is running on [Heroku.](https://deadline-tracker.herokuapp.com)
 
@@ -8,7 +8,7 @@ Some [use cases](https://github.com/Teo44/Deadline-tracker/blob/master/documenta
 
 ## Future features
 
-- A deadline will also include a date
+- ~~A deadline will also include a date~~
 - Deadlines can be given priorities
 - Categories for deadlines
 - User accounts 
