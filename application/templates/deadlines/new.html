@@ -2,10 +2,18 @@
 
 {% block body %}
 <form method="POST" action="{{ url_for('deadlines_create') }}">
-	Name:<br>
-	<input type="text" name="name"/><br>
-	Date:<br>
-	<input type="date" name="date_to_complete"><br>
+	{% for error in form.name.errors %}
+	<li>{{ error }}</li>
+	{% endfor %}
+	{{ form.name.label }}<br>
+	{{ form.name }}<br>
+	{{ form.date.label }}<br>
+	{{ form.date }}<br>
+	<!--{{ form.time.label }}<br>
+	 {{ form.time }}<br> -->
+	{{ form.priority.label}}<br>
+	{{ form.priority }}<br>
+	<br>
 	<input type="submit" value="Add a new deadline"/>
 </form>
 {% endblock %}

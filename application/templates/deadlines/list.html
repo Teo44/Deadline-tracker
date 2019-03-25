@@ -5,12 +5,14 @@
 		<tr>
 			<th>Name</th>
 			<th>Deadline</th>
+			<th>Priority</th>
 			<th>Completed</th>
 		</tr>
 		{% for deadline in deadlines %}
 		<tr>
 			<td>{{ deadline.name }}</td>
 			<td>{{ deadline.date_to_complete }}</td>
+			<td>{{ deadline.priority }}</td>
 			<td>{{ deadline.done }}</td>
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_done', deadline_id=deadline.id) }}">
