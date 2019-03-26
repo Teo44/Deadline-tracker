@@ -9,6 +9,8 @@ class Deadline(db.Model):
     priority = db.Column(db.Integer)
     done = db.Column(db.Boolean, nullable=False, default=False)
 
+    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+
     def __init__(self, name, date_to_complete, priority):
         self.name = name
         self.done = False

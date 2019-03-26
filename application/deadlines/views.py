@@ -3,6 +3,9 @@ from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline
 from application.deadlines.forms import DeadlineForm
 
+from flask_login import login_required, current_user
+
+# TODO: make this require logging in when deadlines are linked to a user
 # /deadlines list all the deadlines from the database
 @app.route("/deadlines", methods=["GET"])
 def deadlines_index():
@@ -10,10 +13,12 @@ def deadlines_index():
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
+@login_required
 def deadlines_form():
     return render_template("deadlines/new.html", form = DeadlineForm())
 
 @app.route("/deadlines/", methods=["POST"])
+@login_required
 def deadlines_create():
     form = DeadlineForm(request.form)
     
@@ -22,6 +27,8 @@ def deadlines_create():
     
     d = Deadline(form.name.data, form.date.data, form.priority.data)
 #    d = Deadline(request.form.get("name"), request.form.get("date_to_complete"))
+    
+    d.account_id = current_user.id
 
     db.session().add(d)
     db.session().commit()
@@ -29,6 +36,7 @@ def deadlines_create():
     return redirect(url_for("deadlines_index"))
 
 @app.route("/deadlines/<deadline_id>/", methods=["POST"])
+@login_required
 def set_deadline_done(deadline_id):
 
     d = Deadline.query.get(deadline_id)
