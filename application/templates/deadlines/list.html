@@ -13,7 +13,18 @@
 			<td>{{ deadline.name }}</td>
 			<td>{{ deadline.date_to_complete }}</td>
 			<!-- This should display "normal", "urgent" etc. How to? -->
-			<td>{{ deadline.priority }}</td>
+			<!-- <td>{{ deadline.priority }}</td> -->
+			
+			{% if deadline.priority == 1 %}
+			<td> Optional </td>
+			{% elif deadline.priority == 2 %}
+			<td> Normal </td>
+			{% elif deadline.priority == 3 %}
+			<td> Urgent </td>
+			{% else %}
+			<td> - </td>
+			{% endif %}
+
 			<td>{{ deadline.done }}</td>
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_done', deadline_id=deadline.id) }}">
