@@ -38,12 +38,22 @@ def deadlines_create():
 
     return redirect(url_for("deadlines_index"))
 
-@app.route("/deadlines/<deadline_id>/", methods=["POST"])
+@app.route("/deadlines/<deadline_id>/done", methods=["POST"])
 @login_required
 def set_deadline_done(deadline_id):
 
     d = Deadline.query.get(deadline_id)
     d.done = True
+    db.session().commit()
+
+    return redirect(url_for("deadlines_index"))
+
+@app.route("/deadlines/<deadline_id>/delete", methods=["POST"])
+@login_required
+def delete_deadline(deadline_id):
+
+    d = Deadline.query.get(deadline_id)
+    db.session.delete(d)
     db.session().commit()
 
     return redirect(url_for("deadlines_index"))

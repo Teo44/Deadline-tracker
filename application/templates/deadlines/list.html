@@ -31,6 +31,11 @@
 					<input type="submit" value="Set as completed"/>
 				</form>
 			</td>
+			<td>
+				<form method="POST" action="{{ url_for('delete_deadline', deadline_id=deadline.id) }}">
+					<input type="submit" value="Delete"/>
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
