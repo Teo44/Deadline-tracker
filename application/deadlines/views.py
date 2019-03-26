@@ -5,11 +5,14 @@ from application.deadlines.forms import DeadlineForm
 
 from flask_login import login_required, current_user
 
-# TODO: make this require logging in when deadlines are linked to a user
 # /deadlines list all the deadlines from the database
 @app.route("/deadlines", methods=["GET"])
+@login_required
 def deadlines_index():
-    return render_template("deadlines/list.html", deadlines = Deadline.query.all())
+    # show all the deadlines for all users
+    #return render_template("deadlines/list.html", deadlines = Deadline.query.all())
+    # only show deadlines matching current user
+    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id))
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
