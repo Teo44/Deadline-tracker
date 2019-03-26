@@ -13,5 +13,9 @@ from application import views
 from application.deadlines import models
 from application.deadlines import views
 
+# database model for users
+from application.auth import models
+from application.auth import views
+
 # Creating tables
 db.create_all()
