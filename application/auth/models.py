@@ -14,7 +14,7 @@ class User(db.Model):
 
     deadlines = db.relationship("Deadline", backref='account', lazy=True)
 
-    def __init(self, username, password):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
         
