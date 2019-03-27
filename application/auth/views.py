@@ -13,6 +13,8 @@ def auth_registration():
 
     form = RegistrationForm(request.form)
     # TODO: validators for registrations
+    if not form.validate():
+        return render_template("auth/registrationform.html", form = form)
     
     user = User.query.filter_by(username=form.username.data).first()
     if user:
