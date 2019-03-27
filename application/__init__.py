@@ -4,9 +4,13 @@ app = Flask(__name__)
 
 # database
 from flask_sqlalchemy import SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///deadlines.db"
-# Set SQLA to print out all SQL-queries
-app.config["SQLAlCHEMY_ECHO"] = True
+import os
+if os.environ.get("HEROKU"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+else:
+    # Set SQLA to print out all SQL-queries
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///deadlines.db"
+    app.config["SQLAlCHEMY_ECHO"] = True
 
 db = SQLAlchemy(app)
 
@@ -37,4 +41,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 # Creating tables
-db.create_all()
+try:
+    db.create_all()
+except:
+    pass
