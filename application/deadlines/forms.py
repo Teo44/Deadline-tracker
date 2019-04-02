@@ -13,6 +13,8 @@ class DeadlineForm(FlaskForm):
             #[validators.DataRequired(message='Please enter a date.')], 
             choices=[('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
             default='2') 
+    # TODO: validators for category? It can be left empty though, maybe none?
+    category = StringField("Category")
 
     class Meta:
         csrf = False

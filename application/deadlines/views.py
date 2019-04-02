@@ -1,7 +1,9 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for
-from application.deadlines.models import Deadline
+from application.deadlines.models import Deadline, Category
 from application.deadlines.forms import DeadlineForm
+
+from sqlalchemy.sql import exists
 
 from flask_login import login_required, current_user
 
@@ -32,6 +34,17 @@ def deadlines_create():
 #    d = Deadline(request.form.get("name"), request.form.get("date_to_complete"))
     
     d.account_id = current_user.id
+    
+    #category = Category.query.filter(Category.name == form.category.data)
+    
+    if not form.category.data == '':
+        if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
+            category = Category(form.category.data)
+            category.account_id = current_user.id
+            db.session.add(category)
+        category = Category.query.filter(Category.name == form.category.data, Category.account_id == current_user.id).first()
+        d.category_id = category.id
+        category.account_id = current_user.id
 
     db.session().add(d)
     db.session().commit()
