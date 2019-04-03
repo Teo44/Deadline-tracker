@@ -1,5 +1,6 @@
 from application import db
 from datetime import datetime
+from sqlalchemy.sql import text
 
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,6 +20,18 @@ class Deadline(db.Model):
         self.date_to_complete = date_to_complete
         self.priority = priority
 
+    @staticmethod
+    def get_deadline_category(id):
+        stmt = text("SELECT Category.name, Deadline.name FROM Deadline"
+                    " JOIN Deadline__Category ON Deadline__Category.deadline_id = Deadline.id"
+                    " JOIN Category ON Category.id = Deadline__Category.category_id"
+                    " WHERE Deadline__Category.deadline_id = " + str(id))
+        res = db.engine.execute(stmt)
+
+        #return res
+        for row in res:
+            return row[0]
+
 #        # parse the htlm date-string into a list
 #        date = date_to_complete.split("-")
 #        # sets the day, month and year from the date-list
@@ -36,6 +49,17 @@ class Category(db.Model):
     def __init__(self, name):
         self.name = name
 
+
+
     #def __init__(self, name, priority):
     #    self.name = name
     #    self.priority = priority
+
+class Deadline_Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    deadline_id = db.Column(db.Integer, db.ForeignKey('deadline.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+
+    def __init__(self, deadline_id, category_id):
+        self.deadline_id = deadline_id
+        self.category_id = category_id

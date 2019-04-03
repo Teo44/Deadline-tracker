@@ -1,6 +1,6 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for
-from application.deadlines.models import Deadline, Category
+from application.deadlines.models import Deadline, Category, Deadline_Category
 from application.deadlines.forms import DeadlineForm
 
 from sqlalchemy.sql import exists
@@ -45,8 +45,15 @@ def deadlines_create():
         category = Category.query.filter(Category.name == form.category.data, Category.account_id == current_user.id).first()
         d.category_id = category.id
         category.account_id = current_user.id
+        
 
     db.session().add(d)
+
+    if not form.category.data == '':
+        deadline = db.session().query(Deadline).filter_by(name = form.name.data).first()
+        d_c = Deadline_Category(deadline.id, category.id)
+        db.session().add(d_c)
+
     db.session().commit()
 
     return redirect(url_for("deadlines_index"))
