@@ -2,6 +2,39 @@
 
 {% block body %}
 {{ error }}
+
+<body class="text-center table-center">
+	<form class="form-sigin" method="POST" action="{{ url_for('auth_registration') }}">
+		<h1 class="h3 mb-3 font-weigth-normal">Register</h1>
+			<p>
+				{{ form.username(placeholder="username") }}
+			</p>
+			<p>
+				{% for error in form.username.errors %}
+				<li>{{ error }}</li>
+				{% endfor %}
+			</p>
+			<p>
+				{{ form.password(placeholder="password") }}
+			</p>
+			<p>
+				{% for error in form.password.errors %}
+				<li>{{ error }}</li>
+				{% endfor %}
+			</p>
+			<p>
+				{{ form.passwordagain(placeholder="confirm password") }}
+			</p>
+			<p>
+				{% for error in form.passwordagain.errors %}
+				<li>{{ error }}</li>
+				{% endfor %}
+			</p>
+		<button class="btn btn-primary" type="submit">Register</button>
+	</form>
+</body>
+
+<!--
 <form method="POST" action="{{ url_for('auth_registration') }}">
 	<table>
 		<tr>
@@ -55,4 +88,5 @@
 			</td>
 		</tr>
 	</form>
+	-->
 {% endblock %}
