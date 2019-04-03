@@ -3,7 +3,19 @@
 {% extends "layout.html" %}
 
 {% block body %}
-	<h6 class="text-white">
-		View existing deadlines or add a new one.
-	</h6>
+<div class="text-white">
+	<h4 class="text-white mb-4">
+		Login or register to view existing deadlines and add new ones.
+	</h4>
+	<h5 class="mb-4">
+		Fun facts:
+	</h5>
+	<p>
+		There are currently {{ user.get_account_count() }} registered users.
+	</p>
+	<p>
+		These users have {{ deadline.get_deadline_count() }} deadlines in the database,
+		out of which {{ deadline.get_done_deadline_count() }} are completed.
+	</p>
+</div>
 {% endblock %}

@@ -32,6 +32,28 @@ class Deadline(db.Model):
         for row in res:
             return row[0]
 
+    @staticmethod
+    def get_deadline_count():
+        stmt = text("SELECT COUNT(*) FROM Deadline")
+        res = db.engine.execute(stmt)
+
+        for row in res:
+            return row[0]
+    
+    @staticmethod
+    def get_done_deadline_count():
+        stmt = text("SELECT COUNT(*) FROM Deadline"
+                    " WHERE Deadline.done")
+        res = db.engine.execute(stmt)
+
+        for row in res:
+            return row[0]
+    
+    # @staticmethod
+    # def get_undone_percentage():
+    #     stmt = text("SELECT COUNT(
+        
+
 #        # parse the htlm date-string into a list
 #        date = date_to_complete.split("-")
 #        # sets the day, month and year from the date-list

@@ -7,6 +7,10 @@ from sqlalchemy.sql import exists
 
 from flask_login import login_required, current_user
 
+@app.route("/")
+def deadlines_main():
+    return render_template("index.html")
+
 # /deadlines list all the deadlines from the database
 @app.route("/deadlines", methods=["GET"])
 @login_required
