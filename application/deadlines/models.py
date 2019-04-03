@@ -25,7 +25,7 @@ class Deadline(db.Model):
         stmt = text("SELECT Category.name, Deadline.name FROM Deadline"
                     " JOIN Deadline__Category ON Deadline__Category.deadline_id = Deadline.id"
                     " JOIN Category ON Category.id = Deadline__Category.category_id"
-                    " WHERE Deadline__Category.deadline_id = " + str(id))
+                    " WHERE Deadline__Category.deadline_id = :id").params(id=id)
         res = db.engine.execute(stmt)
 
         #return res
