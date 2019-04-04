@@ -21,7 +21,13 @@
 			{% endif %}
 
 			<td>{{ category.get_deadline_count(category.id) }}</td>
-		# TODO: buttons to rename, delete and set priority
+			<!-- TODO: buttons to rename, delete and set priority-->
+			<td>
+				<form class="text-white" method="POST" action="{{ url_for('categories_set_priority', category_id = category.id) }}">
+					<input type="submit" value="Set priority" />
+					{{ prioForm.priority }}
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
