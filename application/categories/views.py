@@ -1,8 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from application import app, db
 from application.deadlines.models import Deadline, Category, Deadline_Category
-# TODO:CategoryNameForm
-from application.categories.forms import CategoryPriorityForm
+from application.categories.forms import CategoryPriorityForm, CategoryNameForm
 
 from flask_login import login_required, current_user
 
@@ -11,7 +10,21 @@ from flask_login import login_required, current_user
 def categories_index():
     # form that lists all the users categories, with functionality
     # to rename, delete and change their priority
-    return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm())
+    return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm(), nameForm = CategoryNameForm())
+
+@app.route("/categories/<category_id>/rename", methods=["POST"])
+@login_required
+def rename_category(category_id):
+    form = CategoryNameForm(request.form)
+
+    if not form.validate():
+        return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm(), nameForm = form)
+
+    c = Category.query.get(category_id)
+    c.name = request.form.get("name")
+    db.session().commit()
+
+    return redirect(url_for("categories_index"))
 
 @app.route("/categories/<category_id>/delete", methods=["POST"])
 @login_required

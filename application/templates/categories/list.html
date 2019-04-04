@@ -33,6 +33,12 @@
 					<input type="submit" value="Delete"/>
 				</form>
 			</td>
+			<td>
+				<form method="POST" action="{{ url_for('rename_category', category_id=category.id) }}">
+					<input type="submit" value="Rename"/>
+					{{ nameForm.name }}
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
