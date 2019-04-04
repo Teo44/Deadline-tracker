@@ -20,9 +20,12 @@ from application import views
 from application.deadlines import models
 from application.deadlines import views
 
-    # database model for users
+# database model for users
 from application.auth import models
 from application.auth import views
+
+# database model for deadline categories
+from application.categories import views
 
 # registeration
 from application.auth.models import User

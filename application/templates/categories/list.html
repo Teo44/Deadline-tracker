@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block body %}
+	<table class="table table-dark">
+		<tr>
+			<th>Category</th>
+			<th>Priority</th>
+			<th>Deadlines</th>
+		</tr>
+		{% for category in categories %}
+		<tr>
+			<td>{{ category.name }}</td>
+			{% if category.priority == 1 %}
+			<td> Optional </td>
+			{% elif category.priority == 2 %}
+			<td> Normal </td>
+			{% elif category.priority == 3 %}
+			<td> Urgent </td>
+			{% else %}
+			<td> - </td>
+			{% endif %}
+
+			<td>{{ category.get_deadline_count(category.id) }}</td>
+		# TODO: buttons to rename, delete and set priority
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

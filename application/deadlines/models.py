@@ -80,8 +80,14 @@ class Category(db.Model):
 
     def __init__(self, name):
         self.name = name
+    
+    @staticmethod
+    def get_deadline_count(category_id):
+        stmt = text("SELECT COUNT(*) FROM Deadline JOIN Deadline__category ON Deadline__category.deadline_id = Deadline.id WHERE Deadline__category.category_id = :id").params(id=category_id)
+        res = db.engine.execute(stmt)
 
-
+        for row in res:
+            return row[0]
 
     #def __init__(self, name, priority):
     #    self.name = name
