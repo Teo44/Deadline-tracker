@@ -13,6 +13,16 @@ def categories_index():
     # to rename, delete and change their priority
     return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm())
 
+@app.route("/categories/<category_id>/delete", methods=["POST"])
+@login_required
+def delete_category(category_id):
+
+    c = Category.query.get(category_id)
+    db.session.delete(c)
+    db.session().commit()
+
+    return redirect(url_for("categories_index"))
+
 @app.route("/categories/<category_id>/priority", methods=["POST"])
 @login_required
 def categories_set_priority(category_id):

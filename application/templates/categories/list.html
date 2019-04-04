@@ -28,6 +28,11 @@
 					{{ prioForm.priority }}
 				</form>
 			</td>
+			<td>
+				<form method="POST" action="{{ url_for('delete_category', category_id=category.id) }}">
+					<input type="submit" value="Delete"/>
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
