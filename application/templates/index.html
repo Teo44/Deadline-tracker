@@ -15,7 +15,10 @@
 	</p>
 	<p>
 		These users have {{ deadline.get_deadline_count() }} deadlines in the database,
-		out of which {{ deadline.get_done_deadline_count() }} are completed.
+		out of which {{ deadline.get_done_deadline_count() }} are completed,
+	</p>
+	<p>
+		and {{ deadline.get_user_count_with_undone_tasks() }} of the uers have at least one uncompleted task.
 	</p>
 </div>
 {% endblock %}

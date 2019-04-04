@@ -48,7 +48,17 @@ class Deadline(db.Model):
 
         for row in res:
             return row[0]
-    
+
+    @staticmethod
+    def get_user_count_with_undone_tasks():
+        stmt = text("SELECT COUNT(DISTINCT Account.id) FROM Account" 
+                    " JOIN Deadline ON Deadline.account_id = Account.id"
+                    " WHERE NOT Deadline.done")
+        res = db.engine.execute(stmt)
+
+        for row in res:
+            return row[0]
+
     # @staticmethod
     # def get_undone_percentage():
     #     stmt = text("SELECT COUNT(
