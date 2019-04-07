@@ -126,5 +126,6 @@ dmypy.json
 .pyre/
 
 deadlines.db
+deadlines.db2
 todo.txt
 deadlines.db.backup
