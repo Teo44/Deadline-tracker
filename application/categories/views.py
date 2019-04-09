@@ -30,7 +30,10 @@ def rename_category(category_id):
 @login_required
 def delete_category(category_id):
 
+    dc = Deadline_Category.query.filter(Deadline_Category.category_id == category_id)
     c = Category.query.get(category_id)
+    for row in dc:
+        db.session.delete(row)
     db.session.delete(c)
     db.session().commit()
 

@@ -7,7 +7,6 @@
 			<th>Deadline</th>
 			<th>Priority</th>
 			<th>Completed</th>
-			<th>Category</th>
 		</tr>
 		{% for deadline in deadlines  %}
 		<tr>
@@ -27,7 +26,6 @@
 			{% endif %}
 
 			<td>{{ deadline.done }}</td>
-			<td>{{ deadline.get_deadline_category(deadline.id) }}</td>
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_done', deadline_id=deadline.id) }}">
 					<input type="submit" value="Set as completed"/>

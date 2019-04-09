@@ -11,7 +11,7 @@ class Deadline(db.Model):
     done = db.Column(db.Boolean, nullable=False, default=False)
 
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    #category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
 
     def __init__(self, name, date_to_complete, priority):
@@ -28,9 +28,9 @@ class Deadline(db.Model):
                     " WHERE Deadline__Category.deadline_id = :id").params(id=id)
         res = db.engine.execute(stmt)
 
-        #return res
-        for row in res:
-            return row[0]
+        return res
+        #for row in res:
+        #    return row[0]
 
     @staticmethod
     def get_deadline_count():

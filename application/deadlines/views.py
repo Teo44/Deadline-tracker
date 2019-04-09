@@ -76,7 +76,11 @@ def set_deadline_done(deadline_id):
 @login_required
 def delete_deadline(deadline_id):
 
+    dc = Deadline_Category.query.filter(Deadline_Category.deadline_id == deadline_id)
+
     d = Deadline.query.get(deadline_id)
+    for row in dc:
+        db.session.delete(row)
     db.session.delete(d)
     db.session().commit()
 
