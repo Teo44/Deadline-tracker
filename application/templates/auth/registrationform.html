@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{{ error }}
+<p class="text-white">
+	{{ error }}
+</p>
 
 <body class="text-center table-center">
 	<form class="form-sigin" method="POST" action="{{ url_for('auth_registration') }}">
@@ -11,7 +13,7 @@
 			</p>
 			<p>
 				{% for error in form.username.errors %}
-				<li>{{ error }}</li>
+				<li class="text-white">{{ error }}</li>
 				{% endfor %}
 			</p>
 			<p>
@@ -19,7 +21,7 @@
 			</p>
 			<p>
 				{% for error in form.password.errors %}
-				<li>{{ error }}</li>
+				<li class="text-white">{{ error }}</li>
 				{% endfor %}
 			</p>
 			<p>
@@ -27,7 +29,7 @@
 			</p>
 			<p>
 				{% for error in form.passwordagain.errors %}
-				<li>{{ error }}</li>
+				<li class="text-white">{{ error }}</li>
 				{% endfor %}
 			</p>
 		<button class="btn btn-primary" type="submit">Register</button>
