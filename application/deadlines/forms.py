@@ -18,3 +18,13 @@ class DeadlineForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class DeadlineCategoryFilterForm(FlaskForm):
+    category = SelectField("Category", choices=[], coerce=int)
+    priority = SelectField("Priority",
+                            choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
+                            default='0')
+
+    class Meta:
+        csrf = False
+

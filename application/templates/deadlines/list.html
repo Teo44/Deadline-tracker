@@ -1,6 +1,36 @@
 {% extends "layout.html" %}
 
 {% block body %}
+
+	<h4 class="text-white">
+		Filter deadlines
+	</h4>
+
+	<table class="table table-dark">
+		<form class="form-group text-white" method="POST" action"{{ url_for('deadlines_index') }}">
+			<tr>
+				</th>
+				<th>
+					{{ category_filter_form.category.label }}
+				</th>
+				<th>
+					{{ category_filter_form.priority.label }}
+				</th>
+			</tr>
+			<tr>
+				<th>
+					{{ category_filter_form.category }}
+				</th>
+				<th>
+					{{ category_filter_form.priority }}
+				</th>
+				<th>
+					<input type="submit" value="Apply">
+				</th>
+			</form>
+		</tr>
+	</table>
+
 	<table class="table table-dark">
 		<tr>
 			<th>Name</th>

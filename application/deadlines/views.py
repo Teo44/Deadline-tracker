@@ -1,9 +1,9 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline, Category, Deadline_Category
-from application.deadlines.forms import DeadlineForm
+from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm
 
-from sqlalchemy.sql import exists
+from sqlalchemy.sql import exists, text
 
 from flask_login import login_required, current_user
 
@@ -15,10 +15,54 @@ def deadlines_main():
 @app.route("/deadlines", methods=["GET"])
 @login_required
 def deadlines_index():
+    category_filter_form = DeadlineCategoryFilterForm(request.form)
+    categories = Category.query.filter(Category.account_id == current_user.id)
+    category_options = [(0, '-')]
+    for c in categories:
+        category_options.append((c.id, c.name))
+    category_filter_form.category.choices = category_options
+    #category_filter_form.category.choices = [(c.id, c.name) for c in categories]
     # show all the deadlines for all users
     #return render_template("deadlines/list.html", deadlines = Deadline.query.all())
     # only show deadlines matching current user
-    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id))
+    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
+                            category_filter_form = category_filter_form)
+
+@app.route("/deadlines", methods=["POST"])
+@login_required
+def deadlines_index_filter():
+    category_filter_form = DeadlineCategoryFilterForm(request.form)
+    categories = Category.query.filter(Category.account_id == current_user.id)
+    category_options = [(0, '-')]
+    for c in categories:
+        category_options.append((c.id, c.name))
+    category_filter_form.category.choices = category_options
+
+    # NOTE: prio is a string, cat is an integer...
+    prio = category_filter_form.priority.data
+    cat = category_filter_form.category.data
+
+    
+
+    if cat != 0:
+        if prio != '0':
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio)
+            return render_template("deadlines/list.html", 
+                                    deadlines = res,
+                                    category_filter_form = category_filter_form)
+        else:
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
+            return render_template("deadlines/list.html", 
+                                    deadlines = res,
+                                    category_filter_form = category_filter_form)
+    elif prio != '0':
+        return render_template("deadlines/list.html", 
+                                deadlines = Deadline.query.filter(Deadline.account_id == current_user.id,
+                                                                Deadline.priority == prio),
+                                category_filter_form = category_filter_form)
+
+    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
+                        category_filter_form = category_filter_form)
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
@@ -26,7 +70,8 @@ def deadlines_index():
 def deadlines_form():
     return render_template("deadlines/new.html", form = DeadlineForm())
 
-@app.route("/deadlines/", methods=["POST"])
+# this method is for when the deadlines are filtered
+@app.route("/deadlines/create", methods=["POST"])
 @login_required
 def deadlines_create():
     form = DeadlineForm(request.form)
