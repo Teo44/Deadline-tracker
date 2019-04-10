@@ -6,6 +6,7 @@
 			<th>Category</th>
 			<th>Priority</th>
 			<th>Deadlines</th>
+			<th>Next deadline</th>
 		</tr>
 		{% for category in categories %}
 		<tr>
@@ -21,7 +22,7 @@
 			{% endif %}
 
 			<td>{{ category.get_deadline_count(category.id) }}</td>
-			<!-- TODO: buttons to rename, delete and set priority-->
+			<td>{{ category.get_next_deadline(category.id) }}</td>
 			<td>
 				<form class="text-white" method="POST" action="{{ url_for('categories_set_priority', category_id = category.id) }}">
 					<input type="submit" value="Set priority" />

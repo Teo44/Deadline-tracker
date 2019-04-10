@@ -2,6 +2,8 @@ from application import db
 from datetime import datetime
 from sqlalchemy.sql import text
 
+import datetime
+
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_to_complete = db.Column(db.Date)
@@ -87,6 +89,19 @@ class Category(db.Model):
         res = db.engine.execute(stmt)
 
         for row in res:
+            return row[0]
+
+    @staticmethod
+    def get_next_deadline(category_id):
+        date = datetime.datetime.now().date()
+        stmt = text("SELECT Deadline.name FROM Category"
+                    " JOIN Deadline__category ON Deadline__category.category_id = Category.id"
+                    " JOIN Deadline ON Deadline.id = Deadline__category.deadline_id"
+                    " WHERE Category.id == :id AND Deadline.date_to_complete >= :date"
+                    " ORDER BY Deadline.date_to_complete ASC").params(date=date, id=category_id)
+        res = db.engine.execute(stmt)
+
+        for row in res: 
             return row[0]
 
     #def __init__(self, name, priority):
