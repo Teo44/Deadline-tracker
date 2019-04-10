@@ -97,7 +97,7 @@ class Category(db.Model):
         stmt = text("SELECT Deadline.name FROM Category"
                     " JOIN Deadline__category ON Deadline__category.category_id = Category.id"
                     " JOIN Deadline ON Deadline.id = Deadline__category.deadline_id"
-                    " WHERE Category.id == :id AND Deadline.date_to_complete >= :date"
+                    " WHERE Category.id = :id AND Deadline.date_to_complete >= :date"
                     " ORDER BY Deadline.date_to_complete ASC").params(date=date, id=category_id)
         res = db.engine.execute(stmt)
 
