@@ -9,6 +9,10 @@
 	<table class="table table-dark">
 		<form class="form-group text-white" method="POST" action"{{ url_for('deadlines_index') }}">
 			<tr>
+				<th>
+					<p>
+						Order by date
+					</p>
 				</th>
 				<th>
 					{{ category_filter_form.category.label }}
@@ -18,6 +22,9 @@
 				</th>
 			</tr>
 			<tr>
+				<th>
+					{{ category_filter_form.date_order }}
+				</th>
 				<th>
 					{{ category_filter_form.category }}
 				</th>

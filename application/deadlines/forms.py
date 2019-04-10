@@ -20,6 +20,7 @@ class DeadlineForm(FlaskForm):
         csrf = False
 
 class DeadlineCategoryFilterForm(FlaskForm):
+    date_order = SelectField("Date_order", choices=[(0, '-'), (1, 'Descending'), (2, 'Ascending')])
     category = SelectField("Category", choices=[], coerce=int)
     priority = SelectField("Priority",
                             choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 

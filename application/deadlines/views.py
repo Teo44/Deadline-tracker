@@ -38,31 +38,43 @@ def deadlines_index_filter():
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
 
-    # NOTE: prio is a string, cat is an integer...
+    # NOTE: prio and date_order are strings, cat is an integer...
     prio = category_filter_form.priority.data
     cat = category_filter_form.category.data
+    date_order = category_filter_form.date_order.data
 
-    
-
-    if cat != 0:
-        if prio != '0':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio)
-            return render_template("deadlines/list.html", 
-                                    deadlines = res,
-                                    category_filter_form = category_filter_form)
+    if cat != 0 and prio != '0' and date_order != '0':
+        if date_order == '1':
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_to_complete.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
-            return render_template("deadlines/list.html", 
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_to_complete.asc())
+    elif cat != 0 and prio != '0':
+        res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio)
+    elif cat != 0 and date_order != 0:
+        if date_order == '1':
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_to_complete.desc())
+        else:
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_to_complete.asc())
+    elif prio != '0' and date_order != '0':
+        if date_order == '1':
+            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_to_complete.desc())
+        else:
+            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_to_complete.asc())
+    elif cat != 0:
+        res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
+    elif prio != '0':
+        res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio)
+    elif date_order != '0':
+        if date_order == '1':
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_to_complete.desc())
+        else:
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_to_complete.asc())
+    else:
+        res = Deadline.query.filter(Deadline.account_id == current_user.id)
+
+    return render_template("deadlines/list.html", 
                                     deadlines = res,
                                     category_filter_form = category_filter_form)
-    elif prio != '0':
-        return render_template("deadlines/list.html", 
-                                deadlines = Deadline.query.filter(Deadline.account_id == current_user.id,
-                                                                Deadline.priority == prio),
-                                category_filter_form = category_filter_form)
-
-    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
-                        category_filter_form = category_filter_form)
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
