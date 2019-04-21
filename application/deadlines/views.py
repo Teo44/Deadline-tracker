@@ -132,6 +132,16 @@ def set_deadline_done(deadline_id):
 
     return redirect(url_for("deadlines_index"))
 
+@app.route("/deadlines/<deadline_id>/undone", methods=["POST"])
+@login_required
+def set_deadline_undone(deadline_id):
+
+    d = Deadline.query.get(deadline_id)
+    d.done = False
+    db.session().commit()
+
+    return redirect(url_for("deadlines_index"))
+
 @app.route("/deadlines/<deadline_id>/delete", methods=["POST"])
 @login_required
 def delete_deadline(deadline_id):
