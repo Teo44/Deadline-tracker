@@ -1,13 +1,14 @@
 from application import db
-from datetime import datetime
+from datetime import datetime, time
 from sqlalchemy.sql import text
 
 import datetime
 
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_to_complete = db.Column(db.Date)
-    time_to_complete = db.Column(db.Time)
+    #date_to_complete = db.Column(db.Date)
+    #time_to_complete = db.Column(db.Time)
+    date_time = db.Column(db.DateTime)
     name = db.Column(db.String(128), nullable=False)
     priority = db.Column(db.Integer)
     done = db.Column(db.Boolean, nullable=False, default=False)
@@ -15,12 +16,20 @@ class Deadline(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     #category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-
-    def __init__(self, name, date_to_complete, priority):
+    def __init__(self, name, date, hour, minute, priority):
         self.name = name
         self.done = False
-        self.date_to_complete = date_to_complete
+        #self.date_to_complete = date
         self.priority = priority
+        #self.time_to_complete = time(int(hour), int(minute))
+        self.date_time = datetime.datetime(date.year, date.month, date.day, int(hour), int(minute))
+
+
+    #def __init__(self, name, date_to_complete, priority):
+    #    self.name = name
+    #    self.done = False
+    #    self.date_to_complete = date_to_complete
+    #    self.priority = priority
 
     @staticmethod
     def get_deadline_category(id):
@@ -97,8 +106,8 @@ class Category(db.Model):
         stmt = text("SELECT Deadline.name FROM Category"
                     " JOIN Deadline__category ON Deadline__category.category_id = Category.id"
                     " JOIN Deadline ON Deadline.id = Deadline__category.deadline_id"
-                    " WHERE Category.id = :id AND Deadline.date_to_complete >= :date"
-                    " ORDER BY Deadline.date_to_complete ASC").params(date=date, id=category_id)
+                    " WHERE Category.id = :id AND Deadline.date_time >= :date"
+                    " ORDER BY Deadline.date_time ASC").params(date=date, id=category_id)
         res = db.engine.execute(stmt)
 
         for row in res: 

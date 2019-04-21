@@ -1,14 +1,23 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, validators
-from wtforms.fields.html5 import DateField, TimeField
+from wtforms.fields.html5 import DateField, TimeField, DateTimeField
 from datetime import datetime
 
 class DeadlineForm(FlaskForm):
     name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.')])
     date = DateField('Date', 
             [validators.InputRequired(message='Please enter a date')], 
-            default=datetime.now())
-    time = TimeField('Time')
+                default=datetime.now())
+    #time = TimeField('Time')
+    hour_selection = []
+    for x in range(24):
+        hour_selection.append((x, format(x, '02d')))
+    hour = SelectField("Time", [validators.InputRequired()], choices=hour_selection)
+    minute_selection = []
+    for x in range(60):
+        minute_selection.append((x, format(x, '02d')))
+    minute = SelectField("Time_minute", [validators.InputRequired()], choices=minute_selection)
+
     priority = SelectField(u"Priority", 
             #[validators.DataRequired(message='Please enter a date.')], 
             choices=[('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 

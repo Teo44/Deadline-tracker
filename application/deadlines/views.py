@@ -45,30 +45,30 @@ def deadlines_index_filter():
 
     if cat != 0 and prio != '0' and date_order != '0':
         if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_to_complete.desc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_time.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_to_complete.asc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_time.asc())
     elif cat != 0 and prio != '0':
         res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio)
     elif cat != 0 and date_order != 0:
         if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_to_complete.desc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_time.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_to_complete.asc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_time.asc())
     elif prio != '0' and date_order != '0':
         if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_to_complete.desc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_time.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_to_complete.asc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_time.asc())
     elif cat != 0:
         res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
     elif prio != '0':
         res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio)
     elif date_order != '0':
         if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_to_complete.desc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_time.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_to_complete.asc())
+            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_time.asc())
     else:
         res = Deadline.query.filter(Deadline.account_id == current_user.id)
 
@@ -87,12 +87,15 @@ def deadlines_form():
 @login_required
 def deadlines_create():
     form = DeadlineForm(request.form)
+
+    print("before validation")
     
-    if not form.validate():
-        return render_template("deadlines/new.html", form = form)
+    #if not form.validate():
+    #    return render_template("deadlines/new.html", form = form)
+
+    print("validated")
     
-    d = Deadline(form.name.data, form.date.data, form.priority.data)
-#    d = Deadline(request.form.get("name"), request.form.get("date_to_complete"))
+    d = Deadline(form.name.data, form.date.data, form.hour.data, form.minute.data, form.priority.data)
     
     d.account_id = current_user.id
     
