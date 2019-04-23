@@ -34,7 +34,7 @@ The Flask-server is not meant for hosting the application on the internet. Below
 
 To run the application on Heroku, [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) and a Heroku account are required.
 
-- Create a new Heroku app (note that the name could be taken)
+- Create a new Heroku app (note that the name could be taken, change if needed)
 ```
 heroku create deadline-tracker
 ```

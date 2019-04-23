@@ -32,3 +32,33 @@ In this case the query returns no results, so the new category is created.
 INSERT INTO Category (name, account_id) 
 	VALUES ("Uni", 16);
 ~~~~
+
+Finally the relation between the deadline and category is created, using the automatically created id's.
+
+~~~~sql
+INSERT INTO Deadline_category (deadline_id, category_id)
+	VALUES (1, 1);
+~~~~
+
+### Viewing the deadlines
+
+The default view, when all the user's deadlines are displayed. Here we assume the user's id to be 16 again.
+
+~~~~sql 
+SELECT * FROM Deadlines WHERE account_id = 16;
+~~~~
+
+If the user wants to only view urgent deadlines, in an ascending order by the date.
+
+~~~~sql
+SELECT * FROM Deadline
+	WHERE account_id = 16 AND priority = 3
+	ORDER BY date_time ASC;
+~~~~
+
+### Setting a deadline as done
+~~~~sql
+UPDATE Deadline
+	SET done = true
+	WHERE id = 1 AND account_id = 16;
+~~~~
