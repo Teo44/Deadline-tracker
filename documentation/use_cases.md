@@ -62,3 +62,16 @@ UPDATE Deadline
 	SET done = true
 	WHERE id = 1 AND account_id = 16;
 ~~~~
+
+### Getting a category's next upcoming deadline
+
+~~~~sql
+SELECT Deadline.name FROM Category
+	JOIN Deadline_category ON Deadline_category.category_id = Category.id
+	JOIN Deadline ON Deadline.id = Deadline_category.deadline_id
+	WHERE Category.id = :id AND Deadline.date_time >= :datetime
+	ORDER BY Deadline.date_time ASC
+	LIMIT 1;
+~~~~
+
+Where :id is the category's id, and :datetime is the current time, so old deadlines aren't shown.
