@@ -43,7 +43,7 @@
 			<th>Name</th>
 			<th>Deadline</th>
 			<th>Priority</th>
-			<th>Completed</th>
+			<th>Status</th>
 		</tr>
 		{% for deadline in deadlines  %}
 		<tr>
@@ -63,17 +63,17 @@
 			{% endif %}
 			
 
-			<td>{{ deadline.done }}</td>
+			<!--<td>{{ deadline.done }}</td> -->
 			{% if deadline.done %}
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_undone', deadline_id=deadline.id) }}">
-					<input type="submit" value="Set as uncompleted"/>
+					<input type="submit" value="Completed"/>
 				</form>
 			</td>
 			{% else %}
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_done', deadline_id=deadline.id) }}">
-					<input type="submit" value="Set as completed"/>
+					<input type="submit" value="To do"/>
 				</form>
 			</td>
 			{% endif %}
