@@ -91,18 +91,12 @@ def deadlines_form():
 def deadlines_create():
     form = DeadlineForm(request.form)
 
-    print("before validation")
-    
-    #if not form.validate():
-    #    return render_template("deadlines/new.html", form = form)
-
-    print("validated")
+    if not form.validate():
+        return render_template("deadlines/new.html", form = form)
     
     d = Deadline(form.name.data, form.date.data, form.hour.data, form.minute.data, form.priority.data)
     
     d.account_id = current_user.id
-    
-    #category = Category.query.filter(Category.name == form.category.data)
     
     if not form.category.data == '':
         if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
