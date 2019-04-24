@@ -10,7 +10,7 @@ class CategoryPriorityForm(FlaskForm):
         csrf = False
 
 class CategoryNameForm(FlaskForm):
-    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.')])
+    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the category.')])
 
     class Meta:
         csrf = False

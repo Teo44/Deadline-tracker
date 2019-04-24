@@ -61,6 +61,7 @@
 			{% else %}
 			<td> - </td>
 			{% endif %}
+			
 
 			<td>{{ deadline.done }}</td>
 			{% if deadline.done %}
@@ -79,6 +80,12 @@
 			<td>
 				<form method="POST" action="{{ url_for('delete_deadline', deadline_id=deadline.id) }}">
 					<input type="submit" value="Delete"/>
+				</form>
+			</td>
+			<td>
+				<form method="POST" action="{{ url_for('rename_deadline', deadline_id=deadline.id) }}">
+					<input type="submit" value="Rename"/>
+					{{ deadline_name_form.name }}
 				</form>
 			</td>
 		</tr>

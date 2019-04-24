@@ -1,7 +1,7 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline, Category, Deadline_Category
-from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm
+from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm
 
 from sqlalchemy.sql import exists, text
 
@@ -16,6 +16,7 @@ def deadlines_main():
 @login_required
 def deadlines_index():
     category_filter_form = DeadlineCategoryFilterForm(request.form)
+    deadline_name_form = DeadlineNameForm(request.form)
     categories = Category.query.filter(Category.account_id == current_user.id)
     category_options = [(0, '-')]
     for c in categories:
@@ -26,7 +27,8 @@ def deadlines_index():
     #return render_template("deadlines/list.html", deadlines = Deadline.query.all())
     # only show deadlines matching current user
     return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
-                            category_filter_form = category_filter_form)
+                            category_filter_form = category_filter_form, 
+                            deadline_name_form = deadline_name_form)
 
 @app.route("/deadlines", methods=["POST"])
 @login_required
@@ -74,7 +76,8 @@ def deadlines_index_filter():
 
     return render_template("deadlines/list.html", 
                                     deadlines = res,
-                                    category_filter_form = category_filter_form)
+                                    category_filter_form = category_filter_form,
+                                    deadline_name_form = DeadlineNameForm())
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
@@ -152,6 +155,20 @@ def delete_deadline(deadline_id):
     for row in dc:
         db.session.delete(row)
     db.session.delete(d)
+    db.session().commit()
+
+    return redirect(url_for("deadlines_index"))
+
+@app.route("/deadlines/<deadline_id>/rename", methods=["POST"])
+@login_required
+def rename_deadline(deadline_id):
+    form = DeadlineNameForm(request.form)
+
+    if not form.validate():
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form)
+
+    d = Deadline.query.get(deadline_id)
+    d.name = request.form.get("name")
     db.session().commit()
 
     return redirect(url_for("deadlines_index"))

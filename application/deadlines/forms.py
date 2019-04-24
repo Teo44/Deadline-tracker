@@ -38,3 +38,8 @@ class DeadlineCategoryFilterForm(FlaskForm):
     class Meta:
         csrf = False
 
+class DeadlineNameForm(FlaskForm):
+    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.')])
+
+    class Meta:
+        csrf = False
