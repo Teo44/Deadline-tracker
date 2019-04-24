@@ -3,6 +3,8 @@
 ~~~~sql
 CREATE TABLE Account (
 	id INTEGER PRIMARY KEY,
+	date_created DATETIME,
+	date_modified DATETIME,
 	username STRING,
 	password STRING
 );
