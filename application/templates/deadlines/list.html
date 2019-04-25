@@ -88,6 +88,18 @@
 					{{ deadline_name_form.name }}
 				</form>
 			</td>
+			<td>
+				<form method="POST" action="{{ url_for('deadline_add_category', deadline_id=deadline.id) }}">
+					<input type="submit" value="Add category"/>
+					{{ add_category_form.category }}
+				</form>
+			</td>
+			<td>
+				<form method="POST" action="{{ url_for('deadline_delete_category', deadline_id=deadline.id) }}">
+					<input type="submit" value="Delete category"/>
+					{{ delete_category_form.category }}
+				</form>
+			</td>
 		</tr>
 		{% endfor %}
 	</table>

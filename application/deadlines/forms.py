@@ -43,3 +43,15 @@ class DeadlineNameForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class DeadlineDeleteCategoryForm(FlaskForm):
+    category = StringField('Category', [validators.InputRequired(message='Please enter a category.')])
+
+    class Meta:
+        csrf = False
+
+class DeadlineAddCategoryForm(FlaskForm):
+    category = StringField('Category', [validators.InputRequired(message='Please enter a category.')])
+
+    class Meta:
+        csrf = False
