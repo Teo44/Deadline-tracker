@@ -5,7 +5,7 @@ A web application for keeping track of deadlines. Currently registered users can
 The application in it's current state is running on [Heroku.](https://deadline-tracker.herokuapp.com)
 
 - [Use cases](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/use_cases.md)
-- [Database diagram.](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/database_diagram.pdf)
+- [Database diagram](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/database_diagram.pdf)
 - [User manual](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/manual.md)
 - [Installation manual](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/installation.md)
 - [SQL CREATE TABLE-queries](https://github.com/Teo44/Deadline-tracker/blob/master/documentation/create_table_queries.md)
