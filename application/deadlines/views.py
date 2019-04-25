@@ -136,8 +136,8 @@ def deadlines_create():
 def deadline_delete_category(deadline_id):
     form = DeadlineAddCategoryForm(request.form)
 
-    #if not form.validate
-    #
+    if not form.validate():
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, add_category_form = DeadlineAddCategoryForm(), delete_category_form = DeadlineDeleteCategoryForm())
 
     
     if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
@@ -161,8 +161,8 @@ def deadline_delete_category(deadline_id):
 def deadline_add_category(deadline_id):
     form = DeadlineAddCategoryForm(request.form)
 
-    #if not form.validate():
-        #return render...
+    if not form.validate():
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, add_category_form = DeadlineAddCategoryForm(), delete_category_form = DeadlineDeleteCategoryForm())
     
     # if category doesnt exists, it is created. Otherwise the existing category is queried
     if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
@@ -220,7 +220,7 @@ def rename_deadline(deadline_id):
     form = DeadlineNameForm(request.form)
 
     if not form.validate():
-        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form)
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, add_category_form = DeadlineAddCategoryForm(), delete_category_form = DeadlineDeleteCategoryForm())
 
     d = Deadline.query.get(deadline_id)
     d.name = request.form.get("name")
