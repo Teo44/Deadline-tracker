@@ -14,6 +14,8 @@ else:
 
 db = SQLAlchemy(app)
 
+db.metadata.clear()
+
 # Import database models and routes
 from application import views
 from application.deadlines import models
@@ -21,6 +23,7 @@ from application.deadlines import views
 from application.auth import models
 from application.auth import views
 from application.categories import views
+from application.categories import models
 
 # registeration
 from application.auth.models import User

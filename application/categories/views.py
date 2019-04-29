@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from application import app, db
-from application.deadlines.models import Deadline, Category, Deadline_Category
+from application.deadlines.models import Deadline, Deadline_Category
+from application.categories.models import Category
 from application.categories.forms import CategoryPriorityForm, CategoryNameForm
 
 from flask_login import login_required, current_user

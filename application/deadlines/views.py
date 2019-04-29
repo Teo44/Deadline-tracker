@@ -1,6 +1,7 @@
 from application import app, db
 from flask import render_template, request, redirect, url_for
-from application.deadlines.models import Deadline, Category, Deadline_Category
+from application.deadlines.models import Deadline, Deadline_Category
+from application.categories.models import Category
 from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm, DeadlineAddCategoryForm, DeadlineDeleteCategoryForm
 
 from sqlalchemy.sql import exists, text
