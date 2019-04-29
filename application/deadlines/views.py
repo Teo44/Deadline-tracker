@@ -48,6 +48,8 @@ def deadlines_index_filter():
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
 
+    # These fields get some database ids put them when the filter form is used, 
+    # no idea why, but this is a bandaid fix for that.
     add_category_form.category.data = ""
     delete_category_form.category.data = ""
 
@@ -59,6 +61,7 @@ def deadlines_index_filter():
 
     res = Deadline.query.filter(Deadline.account_id == current_user.id)
 
+    # Applying any possible filters
     if prio != '0':
         res = res.filter(Deadline.priority == prio)
 
