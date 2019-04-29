@@ -51,39 +51,28 @@ def deadlines_index_filter():
     add_category_form.category.data = ""
     delete_category_form.category.data = ""
 
-    # NOTE: prio and date_order are strings, cat is an integer, not sure why
+    # NOTE: prio, cat_prio and date_order are strings, but cat is an integer, 
     prio = category_filter_form.priority.data
     cat = category_filter_form.category.data
     date_order = category_filter_form.date_order.data
+    cat_prio = category_filter_form.categorypriority.data
 
-    if cat != 0 and prio != '0' and date_order != '0':
+    res = Deadline.query.filter(Deadline.account_id == current_user.id)
+
+    if prio != '0':
+        res = res.filter(Deadline.priority == prio)
+
+    if cat != 0:
+        res = res.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
+
+    if cat_prio != '0':
+        res = res.filter(Deadline_Category.deadline_id == Deadline.id).filter(Category.id == Deadline_Category.category_id).filter(Category.priority == cat_prio)
+
+    if date_order != '0':
         if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_time.desc())
+            res = res.order_by(Deadline.date_time.desc())
         else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio).order_by(Deadline.date_time.asc())
-    elif cat != 0 and prio != '0':
-        res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).filter(Deadline.priority == prio)
-    elif cat != 0 and date_order != 0:
-        if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_time.desc())
-        else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat).order_by(Deadline.date_time.asc())
-    elif prio != '0' and date_order != '0':
-        if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_time.desc())
-        else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio).order_by(Deadline.date_time.asc())
-    elif cat != 0:
-        res = Deadline.query.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
-    elif prio != '0':
-        res = Deadline.query.filter(Deadline.account_id == current_user.id, Deadline.priority == prio)
-    elif date_order != '0':
-        if date_order == '1':
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_time.desc())
-        else:
-            res = Deadline.query.filter(Deadline.account_id == current_user.id).order_by(Deadline.date_time.asc())
-    else:
-        res = Deadline.query.filter(Deadline.account_id == current_user.id)
+            res = res.order_by(Deadline.date_time.asc())
 
     return render_template("deadlines/list.html", 
                                     deadlines = res,

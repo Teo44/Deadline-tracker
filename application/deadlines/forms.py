@@ -35,6 +35,10 @@ class DeadlineCategoryFilterForm(FlaskForm):
                             choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
                             default='0')
 
+    categorypriority = SelectField("Categorypriority",
+                            choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
+                            default='0')
+
     class Meta:
         csrf = False
 
