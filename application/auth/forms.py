@@ -9,6 +9,7 @@ class LoginForm(FlaskForm):
     class Meta:
         csrf = False
 
+# Custom validator to check for whitespace in usernames
 def no_whitespace(form, field):
     if " " in field.data:
         raise ValidationError("Username cannot contain whitespace")

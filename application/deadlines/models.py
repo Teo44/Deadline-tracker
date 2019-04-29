@@ -14,7 +14,6 @@ class Deadline(db.Model):
     done = db.Column(db.Boolean, nullable=False, default=False)
 
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    #category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
     def __init__(self, name, date, hour, minute, priority):
         self.name = name
@@ -23,13 +22,6 @@ class Deadline(db.Model):
         self.priority = priority
         #self.time_to_complete = time(int(hour), int(minute))
         self.date_time = datetime.datetime(date.year, date.month, date.day, int(hour), int(minute))
-
-
-    #def __init__(self, name, date_to_complete, priority):
-    #    self.name = name
-    #    self.done = False
-    #    self.date_to_complete = date_to_complete
-    #    self.priority = priority
 
     @staticmethod
     def get_deadline_category(id):
@@ -40,8 +32,6 @@ class Deadline(db.Model):
         res = db.engine.execute(stmt)
 
         return res
-        #for row in res:
-        #    return row[0]
 
     @staticmethod
     def get_deadline_count():
@@ -69,16 +59,6 @@ class Deadline(db.Model):
 
         for row in res:
             return row[0]
-
-    # @staticmethod
-    # def get_undone_percentage():
-    #     stmt = text("SELECT COUNT(
-        
-
-#        # parse the htlm date-string into a list
-#        date = date_to_complete.split("-")
-#        # sets the day, month and year from the date-list
-#        self.date_to_complete = datetime(int(date[0]), int(date[1]), int(date[2]))
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -112,10 +92,6 @@ class Category(db.Model):
 
         for row in res: 
             return row[0]
-
-    #def __init__(self, name, priority):
-    #    self.name = name
-    #    self.priority = priority
 
 class Deadline_Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

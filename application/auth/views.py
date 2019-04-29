@@ -5,7 +5,6 @@ from application import app, db
 from application.auth.models import User
 from application.auth.forms import LoginForm, RegistrationForm
 
-# handles GET and POST calls to the address /auth/registration
 @app.route("/auth/registration", methods = ["GET", "POST"])
 def auth_registration():
     if request.method == "GET":
@@ -29,8 +28,6 @@ def auth_registration():
     login_user(u)
     return redirect(url_for("index"))
     
-
-# handles GET and POST calls to the address /auth/login
 @app.route("/auth/login", methods = ["GET", "POST"])
 def auth_login():
     if request.method == "GET":
