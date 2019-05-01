@@ -5,6 +5,9 @@
 	{% for error in form.name.errors %}
 	<li>{{ error }}</li>
 	{% endfor %}
+	{% for error in form.category.errors %}
+	<li>{{ error }}</li>
+	{% endfor %}
 	{{ form.name.label }}<br>
 	{{ form.name }}<br>
 	{{ form.date.label }}<br>
