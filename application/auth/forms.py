@@ -2,9 +2,9 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, validators, ValidationError
 
 class LoginForm(FlaskForm):
-    username = StringField("Username", [validators.InputRequired(message='Please enter your username.')])
+    username = StringField("Username", [validators.InputRequired(message='Please enter your username.'), validators.Length(max=25, message='Name too long')])
     password = PasswordField("Password", 
-                            [validators.InputRequired(message='Please enter your password')])
+                            [validators.InputRequired(message='Please enter your password'), validators.Length(max=50, message='Password too long')])
 
     class Meta:
         csrf = False
@@ -15,10 +15,11 @@ def no_whitespace(form, field):
         raise ValidationError("Username cannot contain whitespace")
 
 class RegistrationForm(FlaskForm):
-    username = StringField("Username", [validators.InputRequired(message='Please enter a username.'), 
-                                        no_whitespace])
-    password = PasswordField("Password", [validators.InputRequired(message='Please enter a password'), validators.Length(min=8, message='Password must be at least 8 characters long'), validators.EqualTo('passwordagain', message='Passwords did not match')])
-    passwordagain = PasswordField("Confirm password", [validators.InputRequired(message='Please enter the password again.')])
+    username = StringField("Username", [validators.InputRequired(message='Please enter your username.'), validators.Length(max=25, message='Name too long'), no_whitespace])
+    password = PasswordField("Password", 
+                            [validators.InputRequired(message='Please enter your password'), validators.Length(max=50, message='Password too long')])
+    passwordagain = PasswordField("Confirm password", 
+                            [validators.InputRequired(message='Please enter the password again.'), validators.Length(max=50, message="Password too long")])
 
     class Meta:
         csrf = False

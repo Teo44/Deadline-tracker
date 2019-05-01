@@ -24,10 +24,11 @@ def deadlines_index():
     for c in categories:
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
+    category_form.category.data = ""
 
     return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
                             category_filter_form = category_filter_form, 
-                            deadline_name_form = deadline_name_form, 
+                            deadline_name_form = DeadlineNameForm(), 
                             category_form = category_form)
 
 @app.route("/deadlines", methods=["POST"])
@@ -121,7 +122,8 @@ def deadline_delete_category(deadline_id):
     form = DeadlineCategoryForm(request.form)
 
     if not form.validate():
-        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, category_form = DeadlineCategoryForm())
+        form.category.data = ""
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = DeadlineCategoryFilterForm(), deadline_name_form = DeadlineNameForm(), category_form = form)
 
     
     if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
@@ -146,7 +148,8 @@ def deadline_add_category(deadline_id):
     form = DeadlineCategoryForm(request.form)
 
     if not form.validate():
-        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, category_form = DeadlineCategoryForm())
+        form.category.data = ""
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = DeadlineCategoryFilterForm(), deadline_name_form = DeadlineNameForm(), category_form = form)
     
     # if category doesnt exists, it is created. Otherwise the existing category is queried
     if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
@@ -204,7 +207,8 @@ def rename_deadline(deadline_id):
     form = DeadlineNameForm(request.form)
 
     if not form.validate():
-        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = CategoryFilterForm(), deadline_name_form = form, category_form = DeadlineCategoryForm())
+        form.name.data = ""
+        return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = DeadlineCategoryFilterForm(), deadline_name_form = form, category_form = DeadlineCategoryForm())
 
     d = Deadline.query.get(deadline_id)
     d.name = request.form.get("name")

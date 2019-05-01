@@ -34,6 +34,8 @@ def auth_login():
         return render_template("auth/loginform.html", form=LoginForm())
 
     form = LoginForm(request.form)
+    if not form.validate():
+        return render_template("auth/loginform.html", form = form)
 
     user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
     if not user:

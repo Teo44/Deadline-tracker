@@ -19,6 +19,7 @@ def rename_category(category_id):
     form = CategoryNameForm(request.form)
 
     if not form.validate():
+        form.name.data = ""
         return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm(), nameForm = form)
 
     c = Category.query.get(category_id)

@@ -4,7 +4,7 @@ from wtforms.fields.html5 import DateField, TimeField, DateTimeField
 from datetime import datetime
 
 class DeadlineForm(FlaskForm):
-    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.')])
+    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long')])
     date = DateField('Date', 
             [validators.InputRequired(message='Please enter a date')], 
                 default=datetime.now())
@@ -22,7 +22,7 @@ class DeadlineForm(FlaskForm):
             choices=[('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
             default='2') 
     # TODO: validators for category? It can be left empty though, maybe none?
-    category = StringField("Category")
+    category = StringField("Category", [validators.Length(max=25, message='Category name too long')])
 
 
     class Meta:
@@ -43,13 +43,13 @@ class DeadlineCategoryFilterForm(FlaskForm):
         csrf = False
 
 class DeadlineNameForm(FlaskForm):
-    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.')])
+    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long')])
 
     class Meta:
         csrf = False
 
 class DeadlineCategoryForm(FlaskForm):
-    category = StringField('Category', [validators.InputRequired(message='Please enter a category.')])
+    category = StringField('Category', [validators.InputRequired(message='Please enter a category.'), validators.Length(max=25, message='Category name too long')])
 
     class Meta:
         csrf = False
