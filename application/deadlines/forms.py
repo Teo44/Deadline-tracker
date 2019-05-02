@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, validators
+from wtforms import StringField, SelectField, validators, ValidationError
 from wtforms.fields.html5 import DateField, TimeField, DateTimeField
 from datetime import datetime
 
+def not_empty(form, field):
+    if field.data.isspace():
+        raise ValidationError("Deadline name cannot be blank")
+
 class DeadlineForm(FlaskForm):
-    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long')])
+    name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long'), not_empty])
     date = DateField('Date', 
             [validators.InputRequired(message='Please enter a date')], 
                 default=datetime.now())
@@ -51,3 +55,4 @@ class DeadlineCategoryForm(FlaskForm):
 
     class Meta:
         csrf = False
+
