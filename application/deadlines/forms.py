@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, validators, ValidationError
+from wtforms import StringField, SelectField, validators, ValidationError, BooleanField
 from wtforms.fields.html5 import DateField, TimeField, DateTimeField
 from datetime import datetime
 
@@ -40,6 +40,7 @@ class DeadlineCategoryFilterForm(FlaskForm):
     categorypriority = SelectField("Categorypriority",
                             choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
                             default='0')
+    hide_old_deadlines = BooleanField()
 
     class Meta:
         csrf = False

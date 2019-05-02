@@ -6,6 +6,8 @@ from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm
 
 from sqlalchemy.sql import exists, text
 
+from datetime import datetime
+
 from flask_login import login_required, current_user
 
 @app.route("/")
@@ -52,6 +54,7 @@ def deadlines_index_filter():
     cat = category_filter_form.category.data
     date_order = category_filter_form.date_order.data
     cat_prio = category_filter_form.categorypriority.data
+    hide_old = category_filter_form.hide_old_deadlines.data
 
     res = Deadline.query.filter(Deadline.account_id == current_user.id)
 
@@ -70,6 +73,9 @@ def deadlines_index_filter():
             res = res.order_by(Deadline.date_time.desc())
         else:
             res = res.order_by(Deadline.date_time.asc())
+
+    if hide_old:
+        res = res.filter(Deadline.date_time > datetime.now())
 
     return render_template("deadlines/list.html", 
                                     deadlines = res,
