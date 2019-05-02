@@ -70,9 +70,6 @@
 		<tr>
 			<td>{{ deadline.name }}</td>
 			<td>{{ deadline.date_time }}</td>
-			<!-- This should display "normal", "urgent" etc. How to? -->
-			<!-- <td>{{ deadline.priority }}</td> -->
-			
 			{% if deadline.priority == 1 %}
 			<td> Optional </td>
 			{% elif deadline.priority == 2 %}
@@ -83,8 +80,6 @@
 			<td> - </td>
 			{% endif %}
 			
-
-			<!--<td>{{ deadline.done }}</td> -->
 			{% if deadline.done %}
 			<td>
 				<form method="POST" action="{{ url_for('set_deadline_undone', deadline_id=deadline.id) }}">

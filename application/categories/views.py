@@ -6,11 +6,11 @@ from application.categories.forms import CategoryPriorityForm, CategoryNameForm
 
 from flask_login import login_required, current_user
 
+# form that lists all the users categories, with functionality
+# to rename, delete and change their priority
 @app.route("/categories", methods=["GET"])
 @login_required
 def categories_index():
-    # form that lists all the users categories, with functionality
-    # to rename, delete and change their priority
     return render_template("categories/list.html", categories = Category.query.filter(Category.account_id == current_user.id), prioForm = CategoryPriorityForm(), nameForm = CategoryNameForm())
 
 @app.route("/categories/<category_id>/rename", methods=["POST"])

@@ -6,8 +6,6 @@ import datetime
 
 class Deadline(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    #date_to_complete = db.Column(db.Date)
-    #time_to_complete = db.Column(db.Time)
     date_time = db.Column(db.DateTime)
     name = db.Column(db.String(128), nullable=False)
     priority = db.Column(db.Integer)
@@ -18,9 +16,7 @@ class Deadline(db.Model):
     def __init__(self, name, date, hour, minute, priority):
         self.name = name
         self.done = False
-        #self.date_to_complete = date
         self.priority = priority
-        #self.time_to_complete = time(int(hour), int(minute))
         self.date_time = datetime.datetime(date.year, date.month, date.day, int(hour), int(minute))
 
     @staticmethod

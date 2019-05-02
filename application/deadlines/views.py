@@ -12,7 +12,7 @@ from flask_login import login_required, current_user
 def deadlines_main():
     return render_template("index.html")
 
-# /deadlines list all the deadlines from the database
+# list all the deadlines from the database
 @app.route("/deadlines", methods=["GET"])
 @login_required
 def deadlines_index():
@@ -46,7 +46,7 @@ def deadlines_index_filter():
     # no idea why. This is a bandaid fix for that.
     category_form.category.data = ""
 
-    # NOTE: prio, cat_prio and date_order are strings, but cat is an integer, 
+    # prio, cat_prio and date_order are strings, but cat is an integer, 
     prio = category_filter_form.priority.data
     cat = category_filter_form.category.data
     date_order = category_filter_form.date_order.data
@@ -92,7 +92,6 @@ def deadlines_create():
         return render_template("deadlines/new.html", form = form)
     
     d = Deadline(form.name.data, form.date.data, form.hour.data, form.minute.data, form.priority.data)
-    
     d.account_id = current_user.id
     
     if not form.category.data == '':
@@ -103,7 +102,6 @@ def deadlines_create():
         category = Category.query.filter(Category.name == form.category.data, Category.account_id == current_user.id).first()
         d.category_id = category.id
         category.account_id = current_user.id
-        
 
     db.session().add(d)
 
@@ -124,11 +122,9 @@ def deadline_delete_category(deadline_id):
     if not form.validate():
         form.category.data = ""
         return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id), category_filter_form = DeadlineCategoryFilterForm(), deadline_name_form = DeadlineNameForm(), category_form = form)
-
     
     if not db.session.query(exists().where(Category.name == form.category.data).where(Category.account_id == current_user.id)).scalar():
         return redirect(url_for("deadlines_index"))
-
 
     category = db.session().query(Category).filter(Category.name == form.category.data, Category.account_id == current_user.id).first()
 
@@ -163,7 +159,6 @@ def deadline_add_category(deadline_id):
     db.session().add(d_c)
 
     db.session.commit()
-
         
     return redirect(url_for("deadlines_index"))
 
