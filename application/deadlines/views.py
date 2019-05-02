@@ -31,6 +31,7 @@ def deadlines_index():
                             deadline_name_form = DeadlineNameForm(), 
                             category_form = category_form)
 
+# This method is used when filters are applied to the deadline list
 @app.route("/deadlines", methods=["POST"])
 @login_required
 def deadlines_index_filter():
