@@ -107,6 +107,8 @@ def deadlines_index_filter():
     page_form = PageForm(request.form)
     count = res.count()
     pages = count // 10
+    if count == 10:
+        pages = 0
 
     page_choices = [(0, '1')]
 
