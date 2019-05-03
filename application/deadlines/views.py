@@ -32,6 +32,9 @@ def deadlines_index():
     count = Deadline.get_user_deadline_count(current_user.id)
     pages = count // 10
 
+    if count == 10:
+        pages = 0
+
     page_choices = [(0, '1')]
 
     for i in range(1, pages + 1):
