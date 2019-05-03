@@ -35,11 +35,12 @@ def deadlines_index():
 
     # Dividing the results to pages if necessary
     count = Deadline.get_user_deadline_count(current_user.id)
-    pages = count // 10
 
     # Getting page count, 10 results per page
-    if count == 10:
-        pages = 0
+    pages = count // 10
+    # This avoids having an empty page when there are 10 * n results
+    if count % 10 == 0:
+        pages = pages - 1
 
     page_choices = [(0, '1')]
 
@@ -109,8 +110,9 @@ def deadlines_index_filter():
     count = res.count()
     # Getting page count, 10 results per page
     pages = count // 10
-    if count == 10:
-        pages = 0
+    # This avoids having an empty page when there are 10 * n results
+    if count % 10 == 0:
+        pages = pages - 1
 
     page_choices = [(0, '1')]
 
