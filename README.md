@@ -21,3 +21,8 @@ The account user123 can be used for testing on Heroku. Password: 123123123.
 - Filtering and sorting deadlines 
 - Editing deadlines and categories
 - A neat, dark interface
+
+## Planned, unimplemented features
+
+- More filters, sorting
+- A clearer interface, especially the deadlines-page
