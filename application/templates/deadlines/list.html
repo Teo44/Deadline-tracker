@@ -63,15 +63,15 @@
 	</form>
 
 	{% for error in deadline_name_form.name.errors %}
-	<p class="text-white">	
+	<li class="text-white">	
 		{{ error }}
-	</p>
+	</li>
 	{% endfor %}
 
 	{% for error in category_form.category.errors %}
-	<p class="text-white">	
+	<li class="text-white">	
 		{{ error }}
-	</p>
+	</li>
 	{% endfor %}
 
 	<table class="table table-dark">

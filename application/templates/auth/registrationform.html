@@ -12,7 +12,9 @@
 			</p>
 			<p>
 				{% for error in form.username.errors %}
-				<li class="text-white">{{ error }}</li>
+				<li class="text-white">
+					{{ error }}
+				</li>
 				{% endfor %}
 			</p>
 			<p>
@@ -20,7 +22,9 @@
 			</p>
 			<p>
 				{% for error in form.password.errors %}
-				<li class="text-white">{{ error }}</li>
+				<li class="text-white">
+					{{ error }}
+				</li>
 				{% endfor %}
 			</p>
 			<p>
@@ -28,7 +32,9 @@
 			</p>
 			<p>
 				{% for error in form.passwordagain.errors %}
-				<li class="text-white">{{ error }}</li>
+				<li class="text-white">
+					{{ error }}
+				</li>
 				{% endfor %}
 			</p>
 		<button class="btn btn-primary" type="submit">Register</button>

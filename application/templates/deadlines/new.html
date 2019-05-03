@@ -3,10 +3,14 @@
 {% block body %}
 <form class="form-group text-white"  method="POST" action="{{ url_for('deadlines_create') }}">
 	{% for error in form.name.errors %}
-	<li>{{ error }}</li>
+	<li>
+		{{ error }}
+	</li>
 	{% endfor %}
 	{% for error in form.category.errors %}
-	<li>{{ error }}</li>
+	<li>
+		{{ error }}
+	</li>
 	{% endfor %}
 	{{ form.name.label }}<br>
 	{{ form.name }}<br>

@@ -3,9 +3,9 @@
 {% block body %}
 
 	{% for error in nameForm.name.errors %}
-	<p class="text-white">
+	<li class="text-white">
 		{{ error }}
-	</p>
+	</li>
 	{% endfor %}
 
 	<table class="table table-dark">
