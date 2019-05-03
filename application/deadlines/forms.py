@@ -7,17 +7,13 @@ def not_empty(form, field):
     if field.data.isspace():
         raise ValidationError("Deadline name cannot be blank")
 
-class PageForm(FlaskForm):
-    page = SelectField("Page", choices=[], coerce=int)
-
-    class Meta:
-        csrf = False
-
 class DeadlineForm(FlaskForm):
     name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long'), not_empty])
     date = DateField('Date', 
             [validators.InputRequired(message='Please enter a date')], 
                 default=datetime.now())
+
+    # Time selection fields, because html doesn't have 24h time selection (?!)
     hour_selection = []
     for x in range(24):
         hour_selection.append((x, format(x, '02d')))
@@ -28,7 +24,6 @@ class DeadlineForm(FlaskForm):
     minute = SelectField("Time_minute", choices=minute_selection, coerce=int)
 
     priority = SelectField(u"Priority", 
-            #[validators.DataRequired(message='Please enter a date.')], 
             choices=[('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
             default='2') 
     category = StringField("Category", [validators.Length(max=25, message='Category name too long')])

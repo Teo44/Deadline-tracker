@@ -20,7 +20,7 @@ The form for adding new deadlines can be accesses with the "Add a deadline"-butt
 
 ### Viewing and editing deadlines
 
-Existing deadlines can be viewed from the Deadlines-page, accessed with the Deadlines-button in the top bar. By default, this page displays all the user's deadlines, but they can be filtered according to their category and/or priority.
+Existing deadlines can be viewed from the Deadlines-page, accessed with the Deadlines-button in the top bar. By default, this page displays all the user's deadlines, but they can be filtered according to their category, priority, category priority. Old deadlines can be hidden, and deadlines can be ordered by date. 
 
 The name, deadline date, priority and completion-state of the deadlines are shown to the user. Each deadlines completion-state can be changed by the user, the deadlines can be deleted, and categories can be added to and removed from the deadlines.
 
