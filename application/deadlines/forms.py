@@ -7,6 +7,12 @@ def not_empty(form, field):
     if field.data.isspace():
         raise ValidationError("Deadline name cannot be blank")
 
+class PageForm(FlaskForm):
+    page = SelectField("Page", choices=[], coerce=int)
+
+    class Meta:
+        csrf = False
+
 class DeadlineForm(FlaskForm):
     name = StringField("Name", [validators.InputRequired(message='Please enter a name for the deadline.'), validators.Length(max=25, message='Name too long'), not_empty])
     date = DateField('Date', 
@@ -41,6 +47,8 @@ class DeadlineCategoryFilterForm(FlaskForm):
                             choices=[('0', '-'), ('1', 'Optional'), ('2', 'Normal'), ('3', 'Urgent')], 
                             default='0')
     hide_old_deadlines = BooleanField()
+
+    page = SelectField("Page", choices=[], coerce=int)
 
     class Meta:
         csrf = False

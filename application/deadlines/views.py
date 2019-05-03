@@ -2,7 +2,7 @@ from application import app, db
 from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline, Deadline_Category
 from application.categories.models import Category
-from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm, DeadlineCategoryForm
+from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm, DeadlineCategoryForm, PageForm
 
 from sqlalchemy.sql import exists, text
 
@@ -28,10 +28,26 @@ def deadlines_index():
     category_filter_form.category.choices = category_options
     category_form.category.data = ""
 
-    return render_template("deadlines/list.html", deadlines = Deadline.query.filter(Deadline.account_id == current_user.id),
+    page_form = PageForm(request.form)
+    count = Deadline.get_user_deadline_count(current_user.id)
+    pages = count // 10
+
+    page_choices = [(0, '1')]
+
+    for i in range(1, pages + 1):
+        page_choices.append((10 * i, str(i + 1)))
+
+    page_form.page.choices = page_choices
+
+    category_filter_form.page.choices = page_choices
+
+    deadlines = Deadline.query.filter(Deadline.account_id == current_user.id).limit(10)
+
+    return render_template("deadlines/list.html", deadlines = deadlines,
                             category_filter_form = category_filter_form, 
                             deadline_name_form = DeadlineNameForm(), 
-                            category_form = category_form)
+                            category_form = category_form, 
+                            page_form = page_form)
 
 # This method is used when filters are applied to the deadline list
 @app.route("/deadlines", methods=["POST"])
@@ -44,6 +60,8 @@ def deadlines_index_filter():
     for c in categories:
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
+    
+
 
     # These fields get some database ids put in them when the filter form is used, 
     # no idea why. This is a bandaid fix for that.
@@ -58,30 +76,64 @@ def deadlines_index_filter():
 
     res = Deadline.query.filter(Deadline.account_id == current_user.id)
 
+    print(res.count())
+
     # Applying any possible filters
     if prio != '0':
         res = res.filter(Deadline.priority == prio)
+    print(res.count())
 
-    if cat != 0:
+    if cat != 0 and cat != None:
         res = res.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
 
+    print("cat:")
+    print(cat)
+    print(res.count())
     if cat_prio != '0':
         res = res.filter(Deadline_Category.deadline_id == Deadline.id).filter(Category.id == Deadline_Category.category_id).filter(Category.priority == cat_prio)
+    print(res.count())
 
     if date_order != '0':
         if date_order == '1':
             res = res.order_by(Deadline.date_time.desc())
         else:
             res = res.order_by(Deadline.date_time.asc())
+    print(res.count())
 
     if hide_old:
         res = res.filter(Deadline.date_time > datetime.now())
+    print(res.count())
+
+    page_form = PageForm(request.form)
+    count = res.count()
+    pages = count // 10
+
+    page_choices = [(0, '1')]
+
+    for i in range(1, pages + 1):
+        page_choices.append((10 * i, str(i + 1)))
+
+    page_form.page.choices = page_choices
+
+    category_filter_form.page.choices = page_choices
+
+    page_offset = page_form.page.data
+
+    print(count)
+
+    print(page_offset)
+
+    if page_offset != None and page_offset != 0 and count > 10:
+        res = res.limit(10).offset(page_offset)
+    else:
+        res = res.limit(10)
 
     return render_template("deadlines/list.html", 
                                     deadlines = res,
                                     category_filter_form = category_filter_form,
                                     deadline_name_form = DeadlineNameForm(),
-                                    category_form = category_form)
+                                    category_form = category_form, 
+                                    page_form = page_form)
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")

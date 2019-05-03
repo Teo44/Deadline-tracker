@@ -30,6 +30,11 @@
 						Hide old deadlines
 					</p>
 				</th>
+				<th>
+					<p>
+						Page
+					</p>
+				</th>
 			</tr>
 			<tr>
 				<th>
@@ -48,12 +53,14 @@
 					{{ category_filter_form.hide_old_deadlines }}
 				</th>
 				<th>
+					{{ category_filter_form.page }}
+				</th>
+				<th>
 					<input type="submit" value="Apply">
 				</th>
-			</form>
-		</tr>
-	</table>
-
+			</tr>
+		</table>
+	</form>
 
 	{% for error in deadline_name_form.name.errors %}
 	<p class="text-white">	
@@ -127,4 +134,7 @@
 		</tr>
 		{% endfor %}
 	</table>
+
+
+
 {% endblock %}

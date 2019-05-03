@@ -20,6 +20,15 @@ class Deadline(db.Model):
         self.date_time = datetime.datetime(date.year, date.month, date.day, int(hour), int(minute))
 
     @staticmethod
+    def get_user_deadline_count(id):
+        stmt = text("SELECT COUNT(*) FROM Deadline"
+                    " WHERE Deadline.account_id = :id").params(id=id)
+        res = db.engine.execute(stmt)
+
+        for row in res:
+            return row[0]
+
+    @staticmethod
     def get_deadline_category(id):
         stmt = text("SELECT Category.name, Deadline.name FROM Deadline"
                     " JOIN Deadline__Category ON Deadline__Category.deadline_id = Deadline.id"
