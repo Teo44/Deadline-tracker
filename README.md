@@ -1,8 +1,8 @@
 # Deadline-tracker
 
-A web application for keeping track of deadlines. Currently registered users can add deadlines with a name and a time to complete them, mark them as completed and delete them. Deadlines can also be filtered, ordered and divided into categories, which can also be given a priority. 
+A web application for keeping track of deadlines. Deadlines can be given dates, categories and priorities to make keeping up with them as easy as possible.
 
-The application in it's current state is running on [Heroku.](https://deadline-tracker.herokuapp.com) 
+The application in its current state is running on [Heroku.](https://deadline-tracker.herokuapp.com) 
 
 The account user123 can be used for testing on Heroku. Password: 123123123.
 
