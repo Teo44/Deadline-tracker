@@ -2,7 +2,7 @@ from application import app, db
 from flask import render_template, request, redirect, url_for
 from application.deadlines.models import Deadline, Deadline_Category
 from application.categories.models import Category
-from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm, DeadlineCategoryForm, PageForm
+from application.deadlines.forms import DeadlineForm, DeadlineCategoryFilterForm, DeadlineNameForm, DeadlineCategoryForm
 
 from sqlalchemy.sql import exists, text
 
@@ -18,29 +18,34 @@ def deadlines_main():
 @app.route("/deadlines", methods=["GET"])
 @login_required
 def deadlines_index():
+    # Form for filtering the deadlines
     category_filter_form = DeadlineCategoryFilterForm(request.form)
+    # Form for changing a deadlines name
     deadline_name_form = DeadlineNameForm(request.form)
+    # Form for adding or deleting a category from deadlines
     category_form = DeadlineCategoryForm(request.form)
     categories = Category.query.filter(Category.account_id == current_user.id)
+
+    # Getting the categories for the dropdown menu
     category_options = [(0, '-')]
     for c in categories:
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
     category_form.category.data = ""
 
-    page_form = PageForm(request.form)
+    # Dividing the results to pages if necessary
     count = Deadline.get_user_deadline_count(current_user.id)
     pages = count // 10
 
+    # Getting page count, 10 results per page
     if count == 10:
         pages = 0
 
     page_choices = [(0, '1')]
 
+    # Adding the pages for the page dropdown menu
     for i in range(1, pages + 1):
         page_choices.append((10 * i, str(i + 1)))
-
-    page_form.page.choices = page_choices
 
     category_filter_form.page.choices = page_choices
 
@@ -49,8 +54,7 @@ def deadlines_index():
     return render_template("deadlines/list.html", deadlines = deadlines,
                             category_filter_form = category_filter_form, 
                             deadline_name_form = DeadlineNameForm(), 
-                            category_form = category_form, 
-                            page_form = page_form)
+                            category_form = category_form)
 
 # This method is used when filters are applied to the deadline list
 @app.route("/deadlines", methods=["POST"])
@@ -64,8 +68,6 @@ def deadlines_index_filter():
         category_options.append((c.id, c.name))
     category_filter_form.category.choices = category_options
     
-
-
     # These fields get some database ids put in them when the filter form is used, 
     # no idea why. This is a bandaid fix for that.
     category_form.category.data = ""
@@ -79,55 +81,47 @@ def deadlines_index_filter():
 
     res = Deadline.query.filter(Deadline.account_id == current_user.id)
 
-    print(res.count())
-
     # Applying any possible filters
     if prio != '0':
         res = res.filter(Deadline.priority == prio)
-    print(res.count())
 
     if cat != 0 and cat != None:
         res = res.filter(Deadline.account_id == current_user.id).filter(Deadline_Category.deadline_id == Deadline.id).filter(Deadline_Category.category_id == cat)
 
-    print("cat:")
-    print(cat)
-    print(res.count())
     if cat_prio != '0':
         res = res.filter(Deadline_Category.deadline_id == Deadline.id).filter(Category.id == Deadline_Category.category_id).filter(Category.priority == cat_prio)
-    print(res.count())
 
     if date_order != '0':
         if date_order == '1':
             res = res.order_by(Deadline.date_time.desc())
         else:
             res = res.order_by(Deadline.date_time.asc())
-    print(res.count())
 
     if hide_old:
         res = res.filter(Deadline.date_time > datetime.now())
-    print(res.count())
 
-    page_form = PageForm(request.form)
+    # The page-form returns the amount of results to skip to end up on the 
+    # correct page. E.g. when choosing page 3, the value is 20 and the first 
+    # two pages worth of results are omitted from the query
+    page_offset = category_filter_form.page.data
+
+    # Dividing the new, filtered results into pages if necessary
     count = res.count()
+    # Getting page count, 10 results per page
     pages = count // 10
     if count == 10:
         pages = 0
 
     page_choices = [(0, '1')]
 
+    # Adding the pages for the page dropdown menu
     for i in range(1, pages + 1):
         page_choices.append((10 * i, str(i + 1)))
 
-    page_form.page.choices = page_choices
-
     category_filter_form.page.choices = page_choices
 
-    page_offset = page_form.page.data
-
-    print(count)
-
-    print(page_offset)
-
+    # Applying the offset, if a page other than 1 was selected, to
+    # get the to desired page.
     if page_offset != None and page_offset != 0 and count > 10:
         res = res.limit(10).offset(page_offset)
     else:
@@ -137,8 +131,7 @@ def deadlines_index_filter():
                                     deadlines = res,
                                     category_filter_form = category_filter_form,
                                     deadline_name_form = DeadlineNameForm(),
-                                    category_form = category_form, 
-                                    page_form = page_form)
+                                    category_form = category_form)
 
 # Function for adding a new deadline, renders new.html
 @app.route("/deadlines/new/")
